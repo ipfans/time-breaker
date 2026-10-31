@@ -7,7 +7,8 @@ import os
 /// while the user works in another app, but a non-activating panel can still become key and
 /// receive keyboard input without taking activation from that app.
 ///
-/// The window stays at full `alphaValue`; background transparency is composed inside the content.
+/// The window stays at full `alphaValue`; background transparency is composed inside the content,
+/// and fades animate the content view's alpha.
 /// Closing it or pressing Esc is not a way to end the break.
 final class OverlayWindow: NSPanel {
     let displayID: CGDirectDisplayID

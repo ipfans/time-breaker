@@ -21,6 +21,8 @@ enum L10n: String, CaseIterable, Sendable {
     case menuResume = "menu.resume"
     case menuSkip = "menu.skip"
     case menuSkipNotAllowed = "menu.skip.notAllowed"
+    case menuTakeShortBreak = "menu.takeBreak.short"
+    case menuTakeLongBreak = "menu.takeBreak.long"
     case menuSettings = "menu.settings"
     case menuQuit = "menu.quit"
     case menuEdit = "menu.edit"
@@ -51,6 +53,7 @@ enum L10n: String, CaseIterable, Sendable {
     case settingsTabBreaks = "settings.tab.breaks"
     case settingsTabAppearance = "settings.tab.appearance"
     case settingsTabGeneral = "settings.tab.general"
+    case settingsTabSupport = "settings.tab.support"
 
     // Breaks
     case breaksShortHeader = "settings.breaks.short"
@@ -76,6 +79,7 @@ enum L10n: String, CaseIterable, Sendable {
     case validationLongShorterThanShort = "validation.longShorterThanShort"
     case validationKeptPrevious = "validation.keptPrevious"
     case validationTransparency = "validation.transparency"
+    case validationFadeDuration = "validation.fadeDuration"
 
     // Appearance
     case appearanceBackground = "settings.appearance.background"
@@ -97,6 +101,9 @@ enum L10n: String, CaseIterable, Sendable {
     case layoutScaleToFitHelp = "layout.scaleToFit.help"
     case appearanceTransparency = "settings.appearance.transparency"
     case appearanceTransparencyHelp = "settings.appearance.transparency.help"
+    case appearanceFadeIn = "settings.appearance.fadeIn"
+    case appearanceFadeOut = "settings.appearance.fadeOut"
+    case appearanceFadeHelp = "settings.appearance.fade.help"
     case appearancePreview = "settings.appearance.preview"
     case appearancePreviewAccessibility = "settings.appearance.preview.accessibility"
     case openPanelMessage = "settings.appearance.openPanel.message"
@@ -119,4 +126,17 @@ enum L10n: String, CaseIterable, Sendable {
     case loginOpenSettings = "settings.general.loginStatus.openSettings"
     case loginError = "settings.general.loginError"
     case generalVersion = "settings.general.version"
+
+    // Support
+    case supportTitle = "settings.support.title"
+    case supportMessage = "settings.support.message"
+    case supportTipSmall = "settings.support.tip.small"
+    case supportTipMedium = "settings.support.tip.medium"
+    case supportTipLarge = "settings.support.tip.large"
+    case supportLoading = "settings.support.loading"
+    case supportUnavailable = "settings.support.unavailable"
+    case supportRetry = "settings.support.retry"
+    case supportPending = "settings.support.pending"
+    case supportThanks = "settings.support.thanks"
+    case supportFailed = "settings.support.failed"
 }

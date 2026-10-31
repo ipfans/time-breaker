@@ -1,4 +1,5 @@
 import AppKit
+import StoreKit
 import SwiftUI
 
 /// Creates the Settings window on demand and releases it, with its previews, when it closes.
@@ -24,9 +25,13 @@ final class SettingsWindowController: NSObject, NSWindowDelegate {
     }
 
     private func makeWindow() -> NSWindow {
-        let root = SettingsView(model: model, localizer: localizer, initialSection: initialSection) { [weak self] in
-            await self?.chooseImageURL()
-        }
+        let root = SettingsView(
+            model: model,
+            localizer: localizer,
+            initialSection: initialSection,
+            chooseImage: { [weak self] in await self?.chooseImageURL() },
+            purchase: { [weak self] product in try await self?.purchase(product) ?? .userCancelled }
+        )
         let host = NSHostingController(rootView: root)
         host.sizingOptions = [.preferredContentSize]
         let window = NSWindow(contentViewController: host)
@@ -58,5 +63,12 @@ final class SettingsWindowController: NSObject, NSWindowDelegate {
         panel.prompt = localizer.string(.openPanelPrompt)
         let response = await panel.beginSheetModal(for: window)
         return response == .OK ? panel.url : nil
+    }
+
+    /// Attaches the App Store purchase sheet to Settings. Without a window there is nothing to
+    /// attach to, so the purchase is treated as cancelled.
+    private func purchase(_ product: Product) async throws -> Product.PurchaseResult {
+        guard let window else { return .userCancelled }
+        return try await product.purchase(confirmIn: window)
     }
 }

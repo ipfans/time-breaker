@@ -70,6 +70,9 @@ struct SchedulerSnapshot: Equatable, Sendable {
 
     /// Overlays are shown only for an active break that is not suspended.
     var isPresentingBreak: Bool { activeBreak != nil && !isSuspended }
+
+    /// A break can be started on request only while working and not suspended.
+    var canTakeBreak: Bool { activeBreak == nil && !isSuspended }
 }
 
 /// Outcomes of engine transitions, used for diagnostics and tests.
@@ -183,6 +186,17 @@ struct BreakEngine: Sendable {
         var events = overdue + [.breakSkipped(activeBreak.id, activeBreak.kind)]
         events += evaluate(at: now)
         return .success(events)
+    }
+
+    /// Starts a break of `kind` on request, as if its plan had come due, with the plan's configured
+    /// duration and skip permission. Completing or skipping it updates the plans like a scheduled
+    /// break. Ignored during a break or while suspended; overdue transitions are processed first.
+    @discardableResult
+    mutating func takeBreak(_ kind: BreakKind, at now: Instant) -> [BreakEngineEvent] {
+        let overdue = evaluate(at: now)
+        guard activeBreak == nil, !isSuspended else { return overdue }
+        let started = startBreak(kind, at: now)
+        return overdue + [.breakStarted(started.id, started.kind)]
     }
 
     /// Freezes all remaining time. Overdue transitions are processed first.

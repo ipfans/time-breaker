@@ -15,6 +15,8 @@ struct DiagnosticOptions: Sendable {
     var holdsSchedulingActivity = false
     var language: AppLanguage?
     var transparency: Int?
+    var fadeInSeconds: Double?
+    var fadeOutSeconds: Double?
     var layout: ImageLayout?
     var color: RGBColor?
     /// An image the sandbox can read, imported through the normal pipeline at launch.
@@ -24,7 +26,8 @@ struct DiagnosticOptions: Sendable {
 
     var isActive: Bool {
         !workSeconds.isEmpty || !breakSeconds.isEmpty || !skipAllowed.isEmpty || language != nil
-            || transparency != nil || layout != nil || color != nil || backgroundImagePath != nil
+            || transparency != nil || fadeInSeconds != nil || fadeOutSeconds != nil
+            || layout != nil || color != nil || backgroundImagePath != nil
     }
 
     init() {}
@@ -49,6 +52,13 @@ struct DiagnosticOptions: Sendable {
         holdsSchedulingActivity = boolean("TBSchedulingActivity") ?? false
         language = (arguments["TBLanguage"] as? String).flatMap(AppLanguage.init(rawValue:))
         transparency = (arguments["TBTransparency"] as? String).flatMap(AppearanceSettings.parseTransparency)
+        func fadeSeconds(_ key: String) -> Double? {
+            (arguments[key] as? String).flatMap(Double.init).flatMap {
+                AppearanceSettings.fadeDurationRange.contains($0) ? $0 : nil
+            }
+        }
+        fadeInSeconds = fadeSeconds("TBFadeInSeconds")
+        fadeOutSeconds = fadeSeconds("TBFadeOutSeconds")
         layout = (arguments["TBLayout"] as? String).flatMap(ImageLayout.init(rawValue:))
         if let hex = arguments["TBColor"] as? String, hex.count == 6, let value = Int(hex, radix: 16) {
             color = RGBColor(
@@ -66,6 +76,8 @@ struct DiagnosticOptions: Sendable {
         var preferences = preferences
         if let language { preferences.language = language }
         if let transparency { preferences.appearance.transparency = transparency }
+        if let fadeInSeconds { preferences.appearance.fadeInDurationSeconds = fadeInSeconds }
+        if let fadeOutSeconds { preferences.appearance.fadeOutDurationSeconds = fadeOutSeconds }
         if let layout { preferences.appearance.layout = layout }
         if let color { preferences.appearance.color = color }
         if let backgroundImagePath {

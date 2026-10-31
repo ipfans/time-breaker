@@ -26,8 +26,16 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				TimeBreaker.entitlements,
+				TimeBreaker.storekit,
 			);
 			target = A10000000000000000000004 /* TimeBreaker */;
+		};
+		A10000000000000000000017 /* Exceptions for "TimeBreaker" folder in "TimeBreakerTests" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				TimeBreaker.storekit,
+			);
+			target = A10000000000000000000005 /* TimeBreakerTests */;
 		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
@@ -36,6 +44,7 @@
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
 				A10000000000000000000010 /* Exceptions for "TimeBreaker" folder in "TimeBreaker" target */,
+				A10000000000000000000017 /* Exceptions for "TimeBreaker" folder in "TimeBreakerTests" target */,
 			);
 			path = TimeBreaker;
 			sourceTree = "<group>";
@@ -235,7 +244,7 @@
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CODE_SIGN_IDENTITY = "-";
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
 				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
@@ -278,7 +287,7 @@
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CODE_SIGN_IDENTITY = "-";
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
 				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
@@ -310,16 +319,17 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = "Time Breaker";
+				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.healthcare-fitness";
 				INFOPLIST_KEY_LSUIElement = YES;
-				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2026 ipfans. All rights reserved.";
 				INFOPLIST_KEY_NSPrincipalClass = NSApplication;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.ipfans.TimeBreaker;
+				PRODUCT_BUNDLE_IDENTIFIER = com.acgso.timebreaker;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
 			};
@@ -336,16 +346,17 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = "Time Breaker";
+				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.healthcare-fitness";
 				INFOPLIST_KEY_LSUIElement = YES;
-				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2026 ipfans. All rights reserved.";
 				INFOPLIST_KEY_NSPrincipalClass = NSApplication;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.ipfans.TimeBreaker;
+				PRODUCT_BUNDLE_IDENTIFIER = com.acgso.timebreaker;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
 			};
@@ -358,7 +369,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.ipfans.TimeBreakerTests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.acgso.timebreakerTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TimeBreaker.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/TimeBreaker";
@@ -372,7 +383,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.ipfans.TimeBreakerTests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.acgso.timebreakerTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TimeBreaker.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/TimeBreaker";

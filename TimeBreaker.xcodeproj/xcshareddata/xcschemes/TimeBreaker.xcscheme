@@ -62,6 +62,9 @@
             ReferencedContainer = "container:TimeBreaker.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
+      <StoreKitConfigurationFileReference
+         identifier = "../../TimeBreaker/TimeBreaker.storekit">
+      </StoreKitConfigurationFileReference>
    </LaunchAction>
    <ProfileAction
       buildConfiguration = "Release"

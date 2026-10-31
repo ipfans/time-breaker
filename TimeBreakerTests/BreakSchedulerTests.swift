@@ -107,6 +107,28 @@ struct BreakSchedulerTests {
         #expect(scheduler.snapshot.activeBreak?.id == session.id)
     }
 
+    @Test func breakOnRequestStartsNowAndWaitsForItsEnd() {
+        let (scheduler, clock) = makeScheduler()
+        var snapshots: [SchedulerSnapshot] = []
+        scheduler.addObserver { snapshots.append($0) }
+
+        clock.now = time.t(100)
+        scheduler.takeBreak(.long)
+        #expect(snapshots.count == 1)
+        #expect(snapshots.last?.isPresentingBreak == true)
+        #expect(snapshots.last?.activeBreak?.kind == .long)
+        #expect(scheduler.scheduledDeadline == time.t(400))
+
+        // A second request during the break changes nothing and notifies no one.
+        scheduler.takeBreak(.short)
+        #expect(snapshots.count == 1)
+
+        clock.now = time.t(400)
+        scheduler.deadlineReached(generation: scheduler.generation)
+        #expect(scheduler.snapshot.phase == .working)
+        #expect(scheduler.scheduledDeadline == time.t(400 + 1200))
+    }
+
     @Test func realClockWaitStartsAndCompletesABreak() async throws {
         let scheduler = BreakScheduler(
             configurations: configurations(short: (1, 1, true), long: (3600, 300, true)),

@@ -11,6 +11,7 @@ final class AppModel {
     @ObservationIgnored let localizer: Localizer
     @ObservationIgnored let imageStore: BackgroundImageStore
     @ObservationIgnored let launchAtLogin = LaunchAtLoginController()
+    @ObservationIgnored let tipJar = TipJar()
     /// Decodes small preview images for Settings; emptied when Settings closes.
     @ObservationIgnored let previewRenderer: BackgroundImageRenderer
     @ObservationIgnored var onLanguageChange: (() -> Void)?

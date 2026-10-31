@@ -169,6 +169,82 @@ struct BreakEngineTests {
         #expect(engine.snapshot() == afterFirstSkip)
     }
 
+    // MARK: Breaks on request
+
+    @Test func shortBreakOnRequestStartsNowAndCompletesLikeAScheduledOne() throws {
+        var engine = BreakEngine(configurations: configurations(), now: t(0))
+        let events = engine.takeBreak(.short, at: t(100))
+
+        #expect(events == [.breakStarted(1, .short)])
+        let session = try #require(engine.activeBreak)
+        #expect(session.kind == .short)
+        #expect(session.timing == .running(deadline: t(120)))
+        #expect(engine.plans[.short] == .frozen(remaining: .seconds(1100)))
+        #expect(engine.plans[.long] == .frozen(remaining: .seconds(3500)))
+        #expect(!engine.snapshot().canTakeBreak)
+
+        #expect(engine.evaluate(at: t(120)) == [.breakCompleted(1, .short)])
+        #expect(engine.plans[.short] == .running(deadline: t(120 + 1200)))
+        #expect(engine.plans[.long] == .running(deadline: t(120 + 3500)))
+        #expect(engine.snapshot().canTakeBreak)
+    }
+
+    @Test func longBreakOnRequestRestartsBothPlansWhenItCompletes() {
+        var engine = BreakEngine(configurations: configurations(), now: t(0))
+        #expect(engine.takeBreak(.long, at: t(100)) == [.breakStarted(1, .long)])
+        #expect(engine.activeBreak?.timing == .running(deadline: t(400)))
+
+        #expect(engine.evaluate(at: t(400)) == [.breakCompleted(1, .long)])
+        #expect(engine.plans[.short] == .running(deadline: t(400 + 1200)))
+        #expect(engine.plans[.long] == .running(deadline: t(400 + 3600)))
+    }
+
+    @Test func breakOnRequestUsesThePlansDurationAndSkipPermission() throws {
+        var engine = BreakEngine(configurations: configurations(short: (1200, 45, false)), now: t(0))
+        engine.takeBreak(.short, at: t(10))
+        let session = try #require(engine.activeBreak)
+        #expect(session.duration == .seconds(45))
+        #expect(!session.allowsSkip)
+        #expect(throws: SkipRejection.notAllowed) { try engine.skip(sessionID: session.id, at: t(11)).get() }
+    }
+
+    @Test func breakOnRequestWorksForADisabledPlanWithoutReenablingIt() {
+        var engine = BreakEngine(configurations: configurations(longEnabled: false), now: t(0))
+        #expect(engine.takeBreak(.long, at: t(10)) == [.breakStarted(1, .long)])
+        #expect(engine.activeBreak?.duration == .seconds(300))
+
+        engine.evaluate(at: t(310))
+        #expect(engine.plans[.long] == nil)
+        #expect(engine.plans[.short] == .running(deadline: t(310 + 1200)))
+    }
+
+    @Test func breakOnRequestIsIgnoredDuringABreakOrWhileSuspended() {
+        var engine = BreakEngine(configurations: configurations(), now: t(0))
+        engine.takeBreak(.short, at: t(10))
+        let session = engine.activeBreak
+        #expect(engine.takeBreak(.long, at: t(15)).isEmpty)
+        #expect(engine.activeBreak == session)
+
+        engine.evaluate(at: t(30))
+        engine.pause(at: t(40))
+        #expect(!engine.snapshot().canTakeBreak)
+        #expect(engine.takeBreak(.short, at: t(50)).isEmpty)
+        #expect(engine.activeBreak == nil)
+
+        engine.resume(at: t(60))
+        engine.beginSystemSuspension(.displaySleep, at: t(70))
+        #expect(engine.takeBreak(.short, at: t(80)).isEmpty)
+        #expect(engine.activeBreak == nil)
+    }
+
+    @Test func breakOnRequestProcessesOverdueTransitionsFirst() {
+        var engine = BreakEngine(configurations: configurations(), now: t(0))
+        engine.takeBreak(.short, at: t(10))
+        // The break ran out before its deadline callback; the request starts a fresh break.
+        #expect(engine.takeBreak(.long, at: t(40)) == [.breakCompleted(1, .short), .breakStarted(2, .long)])
+        #expect(engine.activeBreak?.kind == .long)
+    }
+
     // MARK: Manual pause
 
     @Test func pauseWhileWorkingFreezesRemainingWorkTime() {

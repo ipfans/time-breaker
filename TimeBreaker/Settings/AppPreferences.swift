@@ -42,7 +42,7 @@ struct BackgroundImageReference: Codable, Hashable, Sendable {
     }
 }
 
-/// Background shared by both break types and every display.
+/// Background shared by both break types and every display, and how the overlay fades.
 struct AppearanceSettings: Codable, Equatable, Sendable {
     var source: BackgroundSource = .color
     var color: RGBColor = .defaultBackground
@@ -50,8 +50,13 @@ struct AppearanceSettings: Codable, Equatable, Sendable {
     var layout: ImageLayout = .scaleToFit
     /// Integer percentage; 0 is fully opaque and 99 keeps 1% opacity.
     var transparency: Int = 0
+    /// Seconds the overlay takes to appear. The countdown runs from the start of the fade.
+    var fadeInDurationSeconds: Double = 0.5
+    /// Seconds the overlay takes to disappear after a break finishes, is skipped, or is paused.
+    var fadeOutDurationSeconds: Double = 0.5
 
     static let transparencyRange = 0...99
+    static let fadeDurationRange = 0.5...3.0
 
     /// Opacity applied once to the composed background color and image.
     var backgroundOpacity: Double {
@@ -74,6 +79,12 @@ struct AppearanceSettings: Codable, Equatable, Sendable {
         layout = (try? container.decodeIfPresent(ImageLayout.self, forKey: .layout)) ?? defaults.layout
         let storedTransparency = (try? container.decodeIfPresent(Int.self, forKey: .transparency)) ?? defaults.transparency
         transparency = Self.transparencyRange.contains(storedTransparency) ? storedTransparency : defaults.transparency
+        func fadeDuration(_ key: CodingKeys, fallback: Double) -> Double {
+            let stored = (try? container.decodeIfPresent(Double.self, forKey: key)) ?? fallback
+            return Self.fadeDurationRange.contains(stored) ? stored : fallback
+        }
+        fadeInDurationSeconds = fadeDuration(.fadeInDurationSeconds, fallback: defaults.fadeInDurationSeconds)
+        fadeOutDurationSeconds = fadeDuration(.fadeOutDurationSeconds, fallback: defaults.fadeOutDurationSeconds)
         if source == .image, image == nil {
             source = .color
         }
@@ -93,6 +104,8 @@ enum PreferencesIssue: Hashable, Sendable {
     case breakDurationOutOfRange(BreakKind)
     case longBreakShorterThanShortBreak
     case transparencyOutOfRange
+    case fadeInDurationOutOfRange
+    case fadeOutDurationOutOfRange
 }
 
 /// Persisted break, appearance, and language settings.
@@ -135,6 +148,12 @@ struct AppPreferences: Codable, Equatable, Sendable {
         }
         if !AppearanceSettings.transparencyRange.contains(appearance.transparency) {
             issues.append(.transparencyOutOfRange)
+        }
+        if !AppearanceSettings.fadeDurationRange.contains(appearance.fadeInDurationSeconds) {
+            issues.append(.fadeInDurationOutOfRange)
+        }
+        if !AppearanceSettings.fadeDurationRange.contains(appearance.fadeOutDurationSeconds) {
+            issues.append(.fadeOutDurationOutOfRange)
         }
         return issues
     }

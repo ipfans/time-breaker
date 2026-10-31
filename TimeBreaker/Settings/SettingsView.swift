@@ -5,18 +5,27 @@ struct SettingsView: View {
         case breaks
         case appearance
         case general
+        case support
     }
 
     let model: AppModel
     let localizer: Localizer
     let chooseImage: @MainActor () async -> URL?
+    let purchase: TipJar.Purchase
 
     @State private var selection: Section
 
-    init(model: AppModel, localizer: Localizer, initialSection: Section = .breaks, chooseImage: @escaping @MainActor () async -> URL?) {
+    init(
+        model: AppModel,
+        localizer: Localizer,
+        initialSection: Section = .breaks,
+        chooseImage: @escaping @MainActor () async -> URL?,
+        purchase: @escaping TipJar.Purchase
+    ) {
         self.model = model
         self.localizer = localizer
         self.chooseImage = chooseImage
+        self.purchase = purchase
         _selection = State(initialValue: initialSection)
     }
 
@@ -30,6 +39,9 @@ struct SettingsView: View {
             }
             Tab(localizer.string(.settingsTabGeneral), systemImage: "gearshape", value: .general) {
                 GeneralSettingsView(model: model, localizer: localizer)
+            }
+            Tab(localizer.string(.settingsTabSupport), systemImage: "heart", value: .support) {
+                SupportSettingsView(tipJar: model.tipJar, localizer: localizer, purchase: purchase)
             }
         }
         .frame(width: 600)
@@ -52,6 +64,13 @@ extension Localizer {
             return string(.validationLongShorterThanShort)
         case .transparencyOutOfRange:
             return string(.validationTransparency)
+        case .fadeInDurationOutOfRange, .fadeOutDurationOutOfRange:
+            let range = AppearanceSettings.fadeDurationRange
+            return format(
+                .validationFadeDuration,
+                fadeDuration(seconds: range.lowerBound, width: .wide),
+                fadeDuration(seconds: range.upperBound, width: .wide)
+            )
         }
     }
 

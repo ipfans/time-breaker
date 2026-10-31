@@ -165,3 +165,18 @@ These items need a person at the Mac, other hardware or software, or another mac
 **Display and window environments:** physical hot-plugging and dock reconnection; clamshell operation and reopening the lid; a portrait display; a live backing-scale change; “Displays have separate Spaces” turned on; Stage Manager; Show Desktop; split-screen fullscreen; full-screen games and video players; Sidecar, AirPlay, DisplayLink, and virtual displays; hidden menu bar and Dock; large text.
 
 **Compatibility:** macOS 26 was not tested. A successful run on macOS 27 does not establish compatibility with the minimum supported version. Intel Macs are unsupported by design.
+
+## 7. App Store preparation and tips (2026-10-31)
+
+Same Mac as section 1, with Xcode 27.2 (27B52) and the macOS 27.2 SDK. Only free Personal Teams were available, so nothing was signed for distribution, registered with Apple, or uploaded. Release steps are in the [App Store release guide](app-store-release.md).
+
+| Check | Result |
+| --- | --- |
+| Automated tests | **Pass.** 125 tests in 7 suites. The new Tip jar suite covers: product loading as consumables in price order; cancelled, pending, and failed purchase results; failed loading and retry; no reload once loaded. It doesn't make purchases. Earlier purchase tests, which passed five consecutive full runs under the previous bundle ID `com.ipfans.TimeBreaker`, were removed after the change to `com.acgso.timebreaker`. |
+| Purchases need a window on macOS | **Finding, fixed.** `Product.purchase()` fails with `invalidPresentationContext`, and `purchase(confirmIn:)` succeeds. Settings attaches the purchase sheet to its window. |
+| `Transaction.unfinished` after `finish()` | **Test-environment limitation**, seen while purchase tests existed. Within one test process, StoreKit testing sometimes kept a transaction returned by `purchase(confirmIn:)` listed as unfinished after `finish()` was awaited and logged. Transactions delivered through `Transaction.updates` were removed every time. |
+| Support tab layout | **Verified** from snapshots of the real view with local products: loaded in English, French, and Simplified Chinese; thanked in Japanese; unavailable in Portuguese (Portugal). The long descriptions wrap, and the price buttons align. |
+| Release archive | **Pass**, signed to run locally with no team. The bundle includes `PrivacyInfo.xcprivacy`, `ITSAppUsesNonExemptEncryption = NO`, and the copyright string. It is `arm64` only, with entitlements unchanged. `TimeBreaker.storekit` is in the test bundle only. |
+| `scripts/archive-app-store.sh` | **Partially verified.** It passes `shellcheck`, rejects bad arguments, requires `TEAM_ID`, and writes valid export options. Signing, export, and upload were not run. |
+
+**Not verified:** purchases under `com.acgso.timebreaker`, locally or against the real App Store or TestFlight, including from the sandbox without a network entitlement; the purchase sheet in the running app; and distribution signing.

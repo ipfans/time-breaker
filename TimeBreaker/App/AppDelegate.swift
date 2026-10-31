@@ -55,6 +55,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             scheduler: scheduler,
             overlay: overlay
         )
+        model.tipJar.startObservingTransactions()
         let statusMenu = StatusMenuController(scheduler: scheduler, localizer: localizer) { [weak self] in
             self?.showSettings(nil)
         }
@@ -90,6 +91,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         scheduler?.stop()
         systemMonitor?.stop()
         schedulingActivity?.end()
+        model?.tipJar.stopObservingTransactions()
         logger.notice("Terminating")
     }
 

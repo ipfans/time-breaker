@@ -2413,6 +2413,114 @@
         }
       }
     },
+    "menu.takeBreak.long" : {
+      "comment" : "Menu command that starts a long break immediately.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Take Long Break Now"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "立即开始长休息"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "立即開始長休息"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "今すぐ長い休憩を取る"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "지금 긴 휴식 시작"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tomar un descanso largo ahora"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Faire une pause longue maintenant"
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fazer uma pausa longa agora"
+          }
+        }
+      }
+    },
+    "menu.takeBreak.short" : {
+      "comment" : "Menu command that starts a short break immediately.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Take Short Break Now"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "立即开始短休息"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "立即開始短休息"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "今すぐ短い休憩を取る"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "지금 짧은 휴식 시작"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tomar un descanso corto ahora"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Faire une pause courte maintenant"
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fazer uma pausa curta agora"
+          }
+        }
+      }
+    },
     "menu.undo" : {
       "comment" : "Edit menu command.",
       "extractionState" : "manual",
@@ -3381,6 +3489,168 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Também preenche as áreas que a imagem não cobre."
+          }
+        }
+      }
+    },
+    "settings.appearance.fade.help" : {
+      "comment" : "Explains that fades are skipped with Reduce Motion. Use the macOS accessibility setting's name in each language.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "When Reduce Motion is on, breaks appear and disappear without fading."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "开启“减弱动态效果”后，休息会直接显示和隐藏，不使用淡入淡出效果。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "開啟「減少動態效果」後，休息會直接顯示和隱藏，不使用淡入淡出效果。"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "「視差効果を減らす」がオンのときは、休憩はフェードせずにすぐに表示・非表示になります。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "동작 줄이기가 켜져 있으면 휴식이 페이드 효과 없이 바로 표시되고 사라집니다."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Si Reducir movimiento está activado, los descansos aparecen y desaparecen sin fundido."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lorsque Réduire les animations est activé, les pauses apparaissent et disparaissent sans fondu."
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Com Reduzir movimento ativado, as pausas aparecem e desaparecem sem desvanecimento."
+          }
+        }
+      }
+    },
+    "settings.appearance.fadeIn" : {
+      "comment" : "Label for the slider that sets how long the break overlay takes to appear.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fade-in duration"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "淡入时长"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "淡入時長"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "フェードインの時間"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "페이드 인 시간"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Duración del fundido de entrada"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Durée du fondu d’entrée"
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Duração do desvanecimento de entrada"
+          }
+        }
+      }
+    },
+    "settings.appearance.fadeOut" : {
+      "comment" : "Label for the slider that sets how long the break overlay takes to disappear.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fade-out duration"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "淡出时长"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "淡出時長"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "フェードアウトの時間"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "페이드 아웃 시간"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Duración del fundido de salida"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Durée du fondu de sortie"
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Duração do desvanecimento de saída"
           }
         }
       }
@@ -5167,6 +5437,600 @@
         }
       }
     },
+    "settings.support.failed" : {
+      "comment" : "Shown when a tip purchase fails.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The purchase couldn’t be completed. Try again later."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "无法完成购买。请稍后再试。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "無法完成購買。請稍後再試。"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "購入を完了できませんでした。しばらくしてからもう一度お試しください。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "구입을 완료할 수 없습니다. 나중에 다시 시도하세요."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No se ha podido completar la compra. Inténtalo de nuevo más tarde."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Impossible d’effectuer l’achat. Réessayez plus tard."
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Não foi possível concluir a compra. Tente novamente mais tarde."
+          }
+        }
+      }
+    },
+    "settings.support.loading" : {
+      "comment" : "Shown while tips load from the App Store.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Loading…"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "正在加载…"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "正在載入⋯"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "読み込み中…"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "불러오는 중…"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cargando…"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Chargement…"
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A carregar…"
+          }
+        }
+      }
+    },
+    "settings.support.message" : {
+      "comment" : "Explains that tips are optional in-app purchases that unlock nothing.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Time Breaker has no ads, accounts, or tracking. If it helps you take better breaks, you can leave a tip to support its development. Tips are optional and don’t unlock any features."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Time Breaker 没有广告、账户或跟踪。如果它帮助你更好地休息，欢迎打赏支持后续开发。打赏完全自愿，不会解锁任何功能。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Time Breaker 沒有廣告、帳號或追蹤。如果它幫助你更好地休息，歡迎贊助支持後續開發。贊助完全自願，不會解鎖任何功能。"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Time Breakerには広告、アカウント、トラッキングはありません。休憩に役立っていれば、チップで開発を応援していただけます。チップは任意で、機能のロックが解除されることはありません。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Time Breaker에는 광고, 계정, 추적이 없습니다. 휴식에 도움이 되었다면 팁으로 개발을 후원할 수 있습니다. 팁은 선택 사항이며 어떤 기능도 잠금 해제하지 않습니다."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Time Breaker no tiene anuncios, cuentas ni rastreo. Si te ayuda a descansar mejor, puedes dejar una propina para apoyar su desarrollo. Las propinas son opcionales y no desbloquean ninguna función."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Time Breaker n’affiche aucune publicité, ne demande aucun compte et ne vous suit pas. S’il vous aide à mieux faire vos pauses, vous pouvez laisser un pourboire pour soutenir son développement. Les pourboires sont facultatifs et ne débloquent aucune fonctionnalité."
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "O Time Breaker não tem anúncios, contas nem rastreio. Se o ajuda a fazer melhores pausas, pode deixar uma gorjeta para apoiar o desenvolvimento. As gorjetas são opcionais e não desbloqueiam nenhuma funcionalidade."
+          }
+        }
+      }
+    },
+    "settings.support.pending" : {
+      "comment" : "Shown when a tip awaits approval, for example through Ask to Buy.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your tip is waiting for approval."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "你的打赏正在等待批准。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "你的贊助正在等待核准。"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "チップは承認待ちです。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "팁이 승인을 기다리고 있습니다."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tu propina está pendiente de aprobación."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Votre pourboire est en attente d’approbation."
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A sua gorjeta aguarda aprovação."
+          }
+        }
+      }
+    },
+    "settings.support.retry" : {
+      "comment" : "Button that loads tips again after a failure.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Try Again"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "重试"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "再試一次"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "再試行"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "다시 시도"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reintentar"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Réessayer"
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tentar novamente"
+          }
+        }
+      }
+    },
+    "settings.support.thanks" : {
+      "comment" : "Shown after a tip completes.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Thank you for supporting Time Breaker!"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "感谢你对 Time Breaker 的支持！"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "感謝你對 Time Breaker 的支持！"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Time Breakerを応援していただき、ありがとうございます！"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Time Breaker를 후원해 주셔서 감사합니다!"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "¡Gracias por apoyar Time Breaker!"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Merci de soutenir Time Breaker !"
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Obrigado por apoiar o Time Breaker!"
+          }
+        }
+      }
+    },
+    "settings.support.tip.large" : {
+      "comment" : "Name of the largest tip. Its price appears on the button beside it.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Large Tip"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "大额打赏"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "大額贊助"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "大きなチップ"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "큰 팁"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Propina grande"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gros pourboire"
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gorjeta grande"
+          }
+        }
+      }
+    },
+    "settings.support.tip.medium" : {
+      "comment" : "Name of the middle tip. Its price appears on the button beside it.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Medium Tip"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "中额打赏"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "中額贊助"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "中くらいのチップ"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "중간 팁"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Propina mediana"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pourboire moyen"
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gorjeta média"
+          }
+        }
+      }
+    },
+    "settings.support.tip.small" : {
+      "comment" : "Name of the smallest tip. Its price appears on the button beside it.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Small Tip"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "小额打赏"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "小額贊助"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "小さなチップ"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "작은 팁"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Propina pequeña"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Petit pourboire"
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gorjeta pequena"
+          }
+        }
+      }
+    },
+    "settings.support.title" : {
+      "comment" : "Heading of the Support section.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Support Time Breaker"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "支持 Time Breaker"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "支持 Time Breaker"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Time Breakerを応援"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Time Breaker 후원하기"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apoya Time Breaker"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Soutenir Time Breaker"
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apoiar o Time Breaker"
+          }
+        }
+      }
+    },
+    "settings.support.unavailable" : {
+      "comment" : "Shown when tips can’t be loaded from the App Store.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tips aren’t available right now. Check your internet connection and try again."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "暂时无法加载打赏项目。请检查网络连接后重试。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "暫時無法載入贊助項目。請檢查網路連線後再試一次。"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "現在チップを利用できません。インターネット接続を確認して、もう一度お試しください。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "지금은 팁을 이용할 수 없습니다. 인터넷 연결을 확인한 후 다시 시도하세요."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Las propinas no están disponibles en este momento. Comprueba tu conexión a internet e inténtalo de nuevo."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Les pourboires ne sont pas disponibles pour le moment. Vérifiez votre connexion à Internet, puis réessayez."
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "As gorjetas não estão disponíveis de momento. Verifique a ligação à Internet e tente novamente."
+          }
+        }
+      }
+    },
     "settings.tab.appearance" : {
       "comment" : "Settings section with background options.",
       "extractionState" : "manual",
@@ -5325,6 +6189,60 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Geral"
+          }
+        }
+      }
+    },
+    "settings.tab.support" : {
+      "comment" : "Settings section for optional tips that support development.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Support"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "支持"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "支持"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "応援"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "후원"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apoyo"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Soutien"
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apoio"
           }
         }
       }
@@ -5541,6 +6459,60 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Introduza uma duração de pausa entre %1$@ e %2$@."
+          }
+        }
+      }
+    },
+    "validation.fadeDuration" : {
+      "comment" : "Validation error. %1$@ and %2$@ are durations with one decimal place, such as “0.5 seconds” and “3.0 seconds”.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Choose a fade duration from %1$@ to %2$@."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "请选择 %1$@ 到 %2$@ 之间的淡入淡出时长。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "請選擇 %1$@ 到 %2$@ 之間的淡入淡出時長。"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "フェード時間は%1$@〜%2$@の範囲で選択してください。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "페이드 시간을 %1$@~%2$@ 사이로 선택하세요."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Elige una duración de fundido de %1$@ a %2$@."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Choisissez une durée de fondu comprise entre %1$@ et %2$@."
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Escolha uma duração de desvanecimento entre %1$@ e %2$@."
           }
         }
       }

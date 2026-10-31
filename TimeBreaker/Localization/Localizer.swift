@@ -56,6 +56,13 @@ final class Localizer {
         )
     }
 
+    /// A duration in tenths of a second, such as “0.5 sec” or “2.5 seconds”.
+    func fadeDuration(seconds: Double, width: Duration.UnitsFormatStyle.UnitWidth = .abbreviated) -> String {
+        Duration.seconds(max(0, seconds)).formatted(
+            .units(allowed: [.seconds], width: width, fractionalPart: .show(length: 1)).locale(locale)
+        )
+    }
+
     /// A locale-formatted integer.
     func number(_ value: Int) -> String {
         value.formatted(.number.locale(locale))

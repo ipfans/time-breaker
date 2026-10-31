@@ -84,6 +84,11 @@ final class BreakScheduler {
         return outcome
     }
 
+    /// Starts a break of `kind` now. Ignored during a break or while paused or away.
+    func takeBreak(_ kind: BreakKind) {
+        perform("take \(kind.rawValue) break") { $0.takeBreak(kind, at: $1) }
+    }
+
     func beginSystemSuspension(_ reason: SystemSuspensionReason) {
         perform("suspend \(reason.rawValue)") { $0.beginSystemSuspension(reason, at: $1) }
     }

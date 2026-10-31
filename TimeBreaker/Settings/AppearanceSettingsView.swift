@@ -1,7 +1,8 @@
 import AppKit
 import SwiftUI
 
-/// Background color or image, layout, and transparency, with a preview of the main display.
+/// Background color or image, layout, transparency, and fade durations, with a preview of the
+/// main display.
 struct AppearanceSettingsView: View {
     let model: AppModel
     let localizer: Localizer
@@ -9,6 +10,7 @@ struct AppearanceSettingsView: View {
 
     @State private var transparencyText = ""
     @State private var transparencyRejected = false
+    @State private var fadeIssues: [PreferencesIssue] = []
     @State private var importError: ImageImportError?
     @State private var isImporting = false
     @FocusState private var transparencyFieldFocused: Bool
@@ -63,6 +65,15 @@ struct AppearanceSettingsView: View {
                 if transparencyRejected {
                     errorText(localizer.string(.validationTransparency))
                 }
+            }
+
+            Section {
+                fadeRow(.appearanceFadeIn, value: \.fadeInDurationSeconds, issue: .fadeInDurationOutOfRange)
+                fadeRow(.appearanceFadeOut, value: \.fadeOutDurationSeconds, issue: .fadeOutDurationOutOfRange)
+                Text(verbatim: localizer.string(.appearanceFadeHelp))
+                    .font(.callout)
+                    .foregroundStyle(.secondary)
+                    .fixedSize(horizontal: false, vertical: true)
             }
 
             Section {
@@ -136,12 +147,51 @@ struct AppearanceSettingsView: View {
         isImporting = false
     }
 
+    // MARK: Fades
+
+    @ViewBuilder private func fadeRow(
+        _ label: L10n,
+        value: WritableKeyPath<AppearanceSettings, Double>,
+        issue: PreferencesIssue
+    ) -> some View {
+        let seconds = appearance[keyPath: value]
+        LabeledContent {
+            HStack(spacing: 8) {
+                Slider(value: fadeBinding(value), in: AppearanceSettings.fadeDurationRange, step: 0.1) {
+                    Text(verbatim: localizer.string(label))
+                }
+                .labelsHidden()
+                .accessibilityValue(Text(verbatim: localizer.fadeDuration(seconds: seconds, width: .wide)))
+                Text(verbatim: localizer.fadeDuration(seconds: seconds))
+                    .monospacedDigit()
+                    .frame(minWidth: 56, alignment: .trailing)
+                    .accessibilityHidden(true)
+            }
+        } label: {
+            Text(verbatim: localizer.string(label))
+        }
+        if fadeIssues.contains(issue) {
+            errorText(localizer.message(for: issue))
+        }
+    }
+
+    /// Rounds slider positions to whole tenths so stored values stay free of floating-point noise.
+    private func fadeBinding(_ keyPath: WritableKeyPath<AppearanceSettings, Double>) -> Binding<Double> {
+        Binding {
+            appearance[keyPath: keyPath]
+        } set: { value in
+            let seconds = ((value * 10).rounded() / 10).clamped(to: AppearanceSettings.fadeDurationRange)
+            fadeIssues = update { $0[keyPath: keyPath] = seconds }
+        }
+    }
+
     // MARK: Bindings
 
-    private func update(_ change: (inout AppearanceSettings) -> Void) {
+    @discardableResult
+    private func update(_ change: (inout AppearanceSettings) -> Void) -> [PreferencesIssue] {
         var candidate = model.preferences
         change(&candidate.appearance)
-        model.apply(candidate)
+        return model.apply(candidate)
     }
 
     private func binding<Value>(_ keyPath: WritableKeyPath<AppearanceSettings, Value>) -> Binding<Value> {

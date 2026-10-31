@@ -97,6 +97,7 @@ struct LocalizationTests {
         localizer.setLanguage(.portuguesePortugal)
         #expect(localizer.string(.overlayPause) == "Suspender")
         #expect(localizer.string(.layoutScaleToFit) == "Ajustar ao ecrã")
+        #expect(localizer.string(.menuTakeLongBreak) == "Fazer uma pausa longa agora")
     }
 
     @Test func chineseVariantsAreDistinct() {
@@ -167,6 +168,18 @@ struct LocalizationTests {
         #expect(localizer.duration(seconds: 1200) == "20 minutos")
         localizer.setLanguage(.japanese)
         #expect(localizer.duration(seconds: 20) == "20秒")
+    }
+
+    @Test func fadeDurationsShowTenthsInTheAppLanguage() {
+        let localizer = Localizer(language: .english)
+        #expect(localizer.fadeDuration(seconds: 0.5) == "0.5 sec")
+        #expect(localizer.fadeDuration(seconds: 0.6) == "0.6 sec")
+        #expect(localizer.fadeDuration(seconds: 3) == "3.0 sec")
+        #expect(localizer.message(for: .fadeOutDurationOutOfRange) == "Choose a fade duration from 0.5 seconds to 3.0 seconds.")
+        localizer.setLanguage(.french)
+        #expect(localizer.fadeDuration(seconds: 1.5) == "1,5\u{202F}s")
+        localizer.setLanguage(.japanese)
+        #expect(localizer.fadeDuration(seconds: 2.5) == "2.5秒")
     }
 
     @Test func positionalArgumentsKeepTheirMeaning() {

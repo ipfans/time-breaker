@@ -93,6 +93,13 @@ final class StatusMenuController: NSObject, NSMenuDelegate {
             menu.addItem(skip)
         }
         menu.addItem(.separator())
+        for kind in BreakKind.allCases {
+            let item = actionItem(localizer.string(kind == .short ? .menuTakeShortBreak : .menuTakeLongBreak), #selector(takeBreak))
+            item.representedObject = kind.rawValue
+            item.isEnabled = snapshot.canTakeBreak
+            menu.addItem(item)
+        }
+        menu.addItem(.separator())
         let settings = actionItem(localizer.string(.menuSettings), #selector(showSettings))
         settings.keyEquivalent = ","
         menu.addItem(settings)
@@ -138,6 +145,11 @@ final class StatusMenuController: NSObject, NSMenuDelegate {
     @objc private func skip(_ sender: NSMenuItem) {
         guard let id = (sender.representedObject as? NSNumber)?.uint64Value else { return }
         scheduler.skip(sessionID: id)
+    }
+
+    @objc private func takeBreak(_ sender: NSMenuItem) {
+        guard let kind = (sender.representedObject as? String).flatMap(BreakKind.init(rawValue:)) else { return }
+        scheduler.takeBreak(kind)
     }
 
     @objc private func showSettings() {

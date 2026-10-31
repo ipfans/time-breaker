@@ -4,8 +4,11 @@ import os
 
 /// Presents one shared break session on every available display.
 ///
-/// Windows exist only while a break is presented. Display, Space, and activation changes are
-/// handled through notifications; nothing polls to keep the overlay in front.
+/// Windows exist only while a break is presented or fading out. Display, Space, and activation
+/// changes are handled through notifications; nothing polls to keep the overlay in front.
+///
+/// Fades animate each window's content view rather than the window, so input interception never
+/// depends on opacity. Reduce Motion, system suspension, and termination skip the fades.
 @MainActor
 final class OverlayController {
     private let localizer: Localizer
@@ -24,6 +27,23 @@ final class OverlayController {
     private var previousApplication: NSRunningApplication?
     private var notificationTokens: [(NotificationCenter, NSObjectProtocol)] = []
     private var orderingRecoveryScheduled = false
+    /// Identifies the fade-out in progress, if any. A completion whose token no longer matches was
+    /// superseded by a resume or an immediate dismissal and must not close anything.
+    private var dismissalToken: UUID?
+
+    /// The overlay's commands. Pause and Skip are ignored once a fade-out starts, so a late click
+    /// cannot act on a break that has already ended.
+    private lazy var overlayActions = OverlayActions(
+        pause: { [weak self] in
+            guard let self, self.dismissalToken == nil else { return }
+            self.actions.pause()
+        },
+        skip: { [weak self] id in
+            guard let self, self.dismissalToken == nil else { return }
+            self.actions.skip(id)
+        },
+        quit: actions.quit
+    )
 
     init(
         localizer: Localizer,
@@ -40,6 +60,7 @@ final class OverlayController {
         observeEnvironmentChanges()
     }
 
+    /// True from the start of the fade-in until the fade-out finishes.
     var isPresenting: Bool { model.session != nil }
     var windowCount: Int { windows.count }
 
@@ -47,16 +68,22 @@ final class OverlayController {
     func update(with snapshot: SchedulerSnapshot) {
         if snapshot.isPresentingBreak, let session = snapshot.activeBreak {
             present(session)
+        } else if snapshot.systemSuspensionReasons.isEmpty {
+            fadeOut()
         } else {
+            // The Mac is going to sleep or the session is inactive; don't wait for an animation.
             dismiss()
         }
     }
 
-    /// Updates appearance in place without changing the session.
+    /// Updates appearance in place without changing the session. New fade durations take effect at
+    /// the next transition.
     func setAppearance(_ appearance: AppearanceSettings) {
         guard appearance != model.appearance else { return }
+        let previous = model.appearance
         model.appearance = appearance
-        if isPresenting {
+        // Only the image and its layout determine which bitmaps are decoded.
+        if isPresenting, appearance.activeImage != previous.activeImage || appearance.layout != previous.layout {
             loadBackgrounds()
         }
     }
@@ -79,11 +106,21 @@ final class OverlayController {
 
     // MARK: - Presentation
 
+    /// Shows a session. The countdown is already running when the fade-in begins.
     private func present(_ session: ActiveBreak) {
         let previous = model.session
+        let wasFadingOut = dismissalToken != nil
         model.session = session
-        if previous?.timing != session.timing || previous?.id != session.id {
+        if wasFadingOut || previous?.timing != session.timing || previous?.id != session.id {
             startTicker()
+        }
+        if wasFadingOut {
+            // Resumed before the fade-out finished: keep the windows and reverse toward full visibility.
+            dismissalToken = nil
+            fadeIn(Array(windows.values))
+            logger.notice("Reversed fade-out for session \(session.id, privacy: .public)")
+            scheduleCoverageDiagnostics()
+            return
         }
         guard previous == nil else { return }
 
@@ -91,26 +128,57 @@ final class OverlayController {
         let frontmost = NSWorkspace.shared.frontmostApplication
         previousApplication = frontmost?.processIdentifier == ProcessInfo.processInfo.processIdentifier ? nil : frontmost
 
-        // Prepare every window first, then order them all front in the same update cycle.
+        // Prepare every window first, then order them all front in the same update cycle and fade
+        // their content in together.
         reconcileWindows()
         for window in windows.values {
             window.orderFrontRegardless()
         }
         windowUnderPointer()?.makeKeyAndOrderFront(nil)
         loadBackgrounds()
+        fadeIn(Array(windows.values))
 
         let now = ContinuousClock.now
         let consumed = session.duration - session.timing.remaining(at: now)
         logger.notice("""
             Presented session \(session.id, privacy: .public) (\(session.kind.rawValue, privacy: .public)) on \
-            \(self.windows.count, privacy: .public) display(s) in \((now - presentationStart).milliseconds, privacy: .public) ms; \
+            \(self.windows.count, privacy: .public) display(s) in \((now - presentationStart).milliseconds, privacy: .public) ms, \
+            fading in \(self.fadeDescription(self.model.appearance.fadeInDurationSeconds), privacy: .public); \
             break time already elapsed: \(consumed.milliseconds, privacy: .public) ms
             """)
         scheduleCoverageDiagnostics()
     }
 
+    /// Fades every display out, keeping the content and backgrounds until the windows close.
+    private func fadeOut() {
+        guard model.session != nil, dismissalToken == nil else { return }
+        guard !reduceMotion else {
+            dismiss()
+            return
+        }
+        // Freeze the countdown where it stands while the content fades.
+        tickerTask?.cancel()
+        tickerTask = nil
+        if let timing = model.session?.timing {
+            model.remainingSeconds = Int(timing.remaining(at: ContinuousClock.now).timeInterval.rounded(.up))
+        }
+        diagnosticsTask?.cancel()
+        diagnosticsTask = nil
+
+        let token = UUID()
+        dismissalToken = token
+        let duration = model.appearance.fadeOutDurationSeconds
+        animateContent(of: windows.values, to: 0, duration: duration) { [weak self] in
+            guard let self, self.dismissalToken == token else { return }
+            self.dismiss()
+        }
+        logger.notice("Fading out overlays \(self.fadeDescription(duration), privacy: .public)")
+    }
+
+    /// Closes every overlay at once and releases its resources.
     private func dismiss(restoringFocus: Bool = true) {
         guard model.session != nil || !windows.isEmpty else { return }
+        dismissalToken = nil
         tickerTask?.cancel()
         tickerTask = nil
         backgroundTask?.cancel()
@@ -172,9 +240,12 @@ final class OverlayController {
 
     private func makeWindow(for screen: NSScreen, displayID: CGDirectDisplayID) -> OverlayWindow {
         let window = OverlayWindow(screen: screen, displayID: displayID)
-        let root = BreakOverlayView(model: model, displayID: displayID, localizer: localizer, actions: actions)
+        let root = BreakOverlayView(model: model, displayID: displayID, localizer: localizer, actions: overlayActions)
         let hostingView = NSHostingView(rootView: root)
         hostingView.sizingOptions = []
+        // Content starts hidden so the window can be ordered front before it fades in.
+        hostingView.wantsLayer = true
+        hostingView.alphaValue = 0
         window.contentView = hostingView
         window.setAccessibilityLabel(localizer.string(.overlayWindowAccessibility))
         return window
@@ -183,6 +254,49 @@ final class OverlayController {
     private func windowUnderPointer() -> OverlayWindow? {
         let pointer = NSEvent.mouseLocation
         return windows.values.first { NSMouseInRect(pointer, $0.frame, false) } ?? windows.values.first
+    }
+
+    // MARK: - Fades
+
+    private var reduceMotion: Bool { NSWorkspace.shared.accessibilityDisplayShouldReduceMotion }
+
+    /// Fades the windows' content to full visibility, or shows it at once with Reduce Motion.
+    private func fadeIn(_ targets: [OverlayWindow]) {
+        guard !targets.isEmpty else { return }
+        if reduceMotion {
+            for window in targets {
+                window.contentView?.alphaValue = 1
+            }
+        } else {
+            animateContent(of: targets, to: 1, duration: model.appearance.fadeInDurationSeconds)
+        }
+    }
+
+    /// Animates each window's content to `alpha`, continuing from the opacity currently on screen so
+    /// that a reversal does not jump. A superseded animation still calls its completion, early.
+    private func animateContent(
+        of targets: some Sequence<OverlayWindow>,
+        to alpha: CGFloat,
+        duration: TimeInterval,
+        completion: @escaping @MainActor () -> Void = {}
+    ) {
+        NSAnimationContext.runAnimationGroup { context in
+            context.duration = duration
+            context.timingFunction = CAMediaTimingFunction(name: .easeInEaseOut)
+            for window in targets {
+                guard let content = window.contentView else { continue }
+                if let shown = content.layer?.presentation()?.opacity {
+                    content.alphaValue = CGFloat(shown)
+                }
+                content.animator().alphaValue = alpha
+            }
+        } completionHandler: {
+            MainActor.assumeIsolated(completion)
+        }
+    }
+
+    private func fadeDescription(_ duration: TimeInterval) -> String {
+        reduceMotion ? "immediately (Reduce Motion)" : "over \(duration) s"
     }
 
     // MARK: - Countdown
@@ -291,6 +405,10 @@ final class OverlayController {
             windowUnderPointer()?.makeKey()
         }
         loadBackgrounds()
+        // A newly attached display fades in on its own. During a fade-out it stays hidden until the
+        // windows close, or fades in with the others if the break resumes.
+        guard dismissalToken == nil else { return }
+        fadeIn(windows.filter { !before.contains($0.key) }.map(\.value))
         scheduleCoverageDiagnostics()
     }
 

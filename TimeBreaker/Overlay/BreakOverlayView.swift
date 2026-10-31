@@ -1,14 +1,11 @@
 import SwiftUI
 
-/// Content of one display's break overlay.
+/// Content of one display's break overlay. `OverlayController` fades it in and out.
 struct BreakOverlayView: View {
     let model: OverlayModel
     let displayID: CGDirectDisplayID
     let localizer: Localizer
     let actions: OverlayActions
-
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
-    @State private var isShown = false
 
     var body: some View {
         ZStack {
@@ -25,12 +22,6 @@ struct BreakOverlayView: View {
             if let session = model.session {
                 BreakPanel(session: session, model: model, localizer: localizer, actions: actions)
                     .padding(40)
-            }
-        }
-        .opacity(isShown ? 1 : 0)
-        .onAppear {
-            withAnimation(reduceMotion ? nil : .easeOut(duration: 0.2)) {
-                isShown = true
             }
         }
         .environment(\.locale, localizer.locale)
